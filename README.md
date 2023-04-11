@@ -8,7 +8,7 @@
 - The Z-Axis Collision Avoidance Algorithm will prevent drones from colliding into each other.
 
 ## Architecture Diagram
-![](./readme_assets/architecture diagram.png)
+![](./readme_assets/architecture_diagram.png)
 
 ## Steps to run Code
 
