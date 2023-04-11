@@ -12,11 +12,11 @@ leader_id=1
 
 # Load images
 
-background = pygame.image.load("CSE2040/graphics/background.png")
+background = pygame.image.load("graphics/background.png")
 
 #image URLs
-drone_img = "CSE2040/graphics/drone.png"
-leader_imgs=["CSE2040/graphics/football.png", "CSE2040/graphics/player1.png", "CSE2040/graphics/player2.png"]
+drone_img = "graphics/drone.png"
+leader_imgs=["graphics/football.png", "graphics/player1.png", "graphics/player2.png"]
 
 # Resize images
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
@@ -31,7 +31,7 @@ class Leader(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         #self.id="leader_"+str(id)
         self.image = pygame.image.load(image)
-        self.image = pygame.transform.scale(self.image, (20, 20))
+        self.image = pygame.transform.scale(self.image, (30, 30))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -89,11 +89,13 @@ class Drone(pygame.sprite.Sprite):
         self.direction = random.uniform(0, 360)
         self.leader=None
         self.angle_wrt_leader=0
+        self.up=False
 
     def assign_leader(self, leader_obj):
         self.leader=leader_obj
 
     def update(self, min_distance):
+        global collision_count
         # Calculate the distance from the target
         if self.leader is not None:
             leader_x, leader_y = self.leader.rect.x, self.leader.rect.y
@@ -107,6 +109,8 @@ class Drone(pygame.sprite.Sprite):
             if distance > min_distance:
                 self.rect.x += self.speed * dx / distance
                 self.rect.y += self.speed * dy / distance
+
+
         
             # dx = self.leader.rect.x - self.rect.x
             # dy = self.leader.rect.y - self.rect.y
@@ -129,7 +133,32 @@ class Drone(pygame.sprite.Sprite):
         #             self.rect.x -= self.speed*(math.cos(angle) * (min_distance - distance))
         #             self.rect.y -= self.speed*(math.sin(angle) * (min_distance - distance))
 
+        #COLLISION AVOIDACE
+        # collision_flag=0
+        # for other_drone in drones:
+        #     if other_drone != self:
+        #         dx = other_drone.rect.x - self.rect.x
+        #         dy = other_drone.rect.y - self.rect.y
+        #         distance = math.sqrt(dx**2 + dy**2)
+        #         if distance < min_distance and self.up==False:
+        #             collision_flag=1
+        #             other_drone.image=pygame.transform.scale(other_drone.image, (50, 50))
+        #             other_drone.up=True
+        # if collision_flag==0:
+        #     self.image=pygame.transform.scale(self.image, (30, 30))
+        #     self.up=False
 
+        #COLLISION DETECTION
+        # for other_drone in drones:
+        #     if other_drone != self:
+        #         dx = other_drone.rect.x - self.rect.x
+        #         dy = other_drone.rect.y - self.rect.y
+        #         distance = math.sqrt(dx**2 + dy**2)
+        #         if distance < 2:
+        #             collision_count+=1
+        #             other_drone.kill()
+        #             print(collision_count)
+                    
 
         
 
@@ -156,7 +185,7 @@ leader_group = pygame.sprite.Group()
 drone_group = pygame.sprite.Group()
 
 leaders = [Leader(x=random.randint(0, WIDTH), y=random.randint(0, HEIGHT), image=leader_imgs[i]) for i in range(3)]
-drones = [Drone(x=random.randint(0, WIDTH), y=random.randint(0, HEIGHT), image="CSE2040/graphics/drone.png") for i in range(10)]
+drones = [Drone(x=random.randint(0, WIDTH), y=random.randint(0, HEIGHT), image="graphics/drone.png") for i in range(20)]
 
 for leader in leaders:
     leader_group.add(leader)
@@ -165,6 +194,8 @@ for drone in drones:
     drone_group.add(drone)
 
 distances=defaultdict(list)
+
+collision_count=0
 
 # Start the main loop
 running = True
