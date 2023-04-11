@@ -8,7 +8,7 @@
 - The Z-Axis Collision Avoidance Algorithm will prevent drones from colliding into each other.
 
 ## Architecture Diagram
-![](readme_assets/architecture diagram.png)
+![](./readme_assets/architecture diagram.png)
 
 ## Steps to run Code
 
@@ -27,7 +27,7 @@ cd Drone-Swarm-Filming-Simulation
 pip install pygame
 ```
 
-- Run similarity.py
+- Run drone_simulation.py
 ```
 python drone_simulation.py
 ```
