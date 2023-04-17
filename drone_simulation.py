@@ -39,6 +39,7 @@ class Leader(pygame.sprite.Sprite):
         self.vel_x = random.uniform(1, 1.5)
         self.vel_y = math.sqrt(self.vel**2 - self.vel_x**2)
         self.direction = random.randint(0, 360)
+        self.priority=5 #Priority 1 to 5, 1 most important
 
     def update_position(self, x, y):
         self.rect.x = x
@@ -90,9 +91,11 @@ class Drone(pygame.sprite.Sprite):
         self.leader=None
         self.angle_wrt_leader=0
         self.up=False
+        self.priority=5
 
     def assign_leader(self, leader_obj):
         self.leader=leader_obj
+        self.priority=leader_obj.priority
 
     def update(self, min_distance):
         global collision_count
